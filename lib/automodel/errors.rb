@@ -1,7 +1,7 @@
 require 'automodel/automodel'
 
 module Automodel
-  ## The base Error class for all **automodel** gem issues.
+  ## The base Error class for all **automodel-sqlserver** gem issues.
   ##
   class Error < ::StandardError
   end

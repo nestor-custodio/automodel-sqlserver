@@ -1,10 +1,10 @@
-# Automodel  [![Gem Version](https://badge.fury.io/rb/automodel.svg)](https://badge.fury.io/rb/automodel)
+# automodel-sqlserver  [![Gem Version](https://badge.fury.io/rb/automodel-sqlserver.svg)](https://badge.fury.io/rb/automodel-sqlserver)
 
 Connecting your Rails application to a database created outside of the Rails environment usually means either spending hours writing up class files for every table, or giving up on using the ActiveRecord query DSL and resigning yourself to building SQL strings and making `execute`/`exec_query` calls.
 
 Are those SQL strings you're building even injection-safe? Hmm... 😟
 
-*With a single command*, **Automodel** lets you connect to any database and access all of its tables via the ActiveRecord DSL you've grown to love!
+*With a single command*, **automodel-sqlserver** lets you connect to any database and access all of its tables via the ActiveRecord DSL you've grown to love!
 
 It does this by analyzing the table structures and:
 - automatically defining all of the corresponding model classes
@@ -17,7 +17,7 @@ It does this by analyzing the table structures and:
 Add this line to your application's Gemfile:
 
 ```ruby
-gem 'automodel'
+gem 'automodel-sqlserver'
 ```
 
 And then execute:
@@ -26,7 +26,14 @@ And then execute:
 
 Or install it yourself as:
 
-    $ gem install automodel
+    $ gem install automodel-sqlserver
+
+
+#### Additional Dependencies
+
+If you are running on Windows and **not** using RubyInstaller, the above steps are all that is needed.
+
+On all other platforms, this gem (and its dependencies) alone are not sufficient to connect to a SQL Server instance: **you will also need to [install FreeTDS on your system](https://github.com/rails-sqlserver/tiny_tds#install) if you haven't already**.
 
 
 ## Using Automodel
@@ -166,19 +173,21 @@ ExternalDB::Book.take.author.class  ## => ExternalDB::Author
 
 ---
 
-[Consult the repo docs for the full Automodel documentation.](http://nestor-custodio.github.io/automodel/Automodel.html)
+[Consult the repo docs for the full **automodel-sqlserver** documentation.](http://nestor-custodio.github.io/automodel-sqlserver/top-level-namespace.html#automodel-instance_method)
 
 
 ## FAQs
 
-- ##### Do I have to add anything to my Gemfile besides `'automodel'`?
-  Only if you want to use connection adapters that are not yet part of your gemset. (e.g. Don't expect to be able to connect to a MySQL database without having added `'mysql2'` to your Gemfile.
+- ##### Do I have to add anything to my Gemfile besides `'automodel-sqlserver'`?
+  Due to the nature of this version of the gem, it is assumed you will want to connect to a SQL Server database, so both **[activerecord-sqlserver-adapter](https://github.com/rails-sqlserver/activerecord-sqlserver-adapter)** and the **[tiny_tds](https://github.com/rails-sqlserver/tiny_tds)** gems are included as dependencies (meaning you don't have to worry about them). Note that these gems alone are not sufficient to connect to a SQL Server instance, however: **you still need to [install FreeTDS on your system](https://github.com/rails-sqlserver/tiny_tds#install) if you haven't already**.
+
+  SQL Server aside, you will need to add the corresponding gems if you want to use connection adapters that are not yet part of your gemset. (e.g. Don't expect to be able to connect to a MySQL database without having added `'mysql2'` to your Gemfile.)
 
 - ##### But what about my application's own models?
-  You can use Automodel **and** continue to use your application's own models without changing a single line of code.
+  You can call `automodel` **and** continue to use your application's own models without changing a single line of code.
 
 - ##### Can I Automodel more than one database?
-  Yes! You can Automodel as many databases with as many different adapters as you like. Automodel takes care of connecting to the various databases and managing their connection pools for you.
+  Yes! You can Automodel as many databases with as many different adapters as you like. **automodel-sqlserver** takes care of connecting to the various databases and managing their connection pools for you.
 
 - ##### What about model name collisions?
   If an `automodel` call will result in a class name collision, an Automodel::NameCollisionError is raised *before* any classes are clobbered.
@@ -187,7 +196,7 @@ ExternalDB::Book.take.author.class  ## => ExternalDB::Author
   You can either monkey-patch your methods onto the applicable Automodel-generated classes once they've been defined, or you can monkey-patch the method onto the connection handler class returned by the `automodel` call itself, which will make it available for all models generated *by that call*.
 
 - ##### What if I'm using ActiveRecord but not Rails?
-  That's no problem at all! The **automodel** gem's *only* dependency is ActiveRecord  -- not Rails. Adding `'automodel'` to your Gemfile (along with any relevant connection adapters, of course) is all you need to make use of the tool in your vanilla-Ruby project. Just be mindful that -- since "config/database.yml" isn't available (as you're not using Rails) -- you'll always need to pass in a full connection spec to your `automodel` calls (as in the very first example, under *"Connecting To The External Database"* above).
+  That's no problem at all! The **automodel-sqlserver** gem depends on ActiveRecord -- not Rails. Adding `'automodel-sqlserver'` to your Gemfile (along with any relevant connection adapters, of course) is all you need to make use of the tool in your vanilla-Ruby project. Just be mindful that -- since "config/database.yml" isn't available (as you're not using Rails) -- you'll always need to pass in a full connection spec to your `automodel` calls (as in the very first example, under *"Connecting To The External Database"* above).
 
 
 ## Feature Roadmap / Future Development
@@ -204,7 +213,7 @@ Additional features/options coming in the future:
 
 ## Contribution / Development
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/nestor-custodio/automodel.
+Bug reports and pull requests are welcome on GitHub at https://github.com/nestor-custodio/automodel-sqlserver.
 
 After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake spec` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
 
