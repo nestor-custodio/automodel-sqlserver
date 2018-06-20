@@ -4,13 +4,13 @@ $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 require 'automodel/version'
 
 Gem::Specification.new do |spec|
-  spec.name          = 'automodel'
+  spec.name          = 'automodel-sqlserver'
   spec.version       = Automodel::VERSION
   spec.authors       = ['Nestor Custodio']
   spec.email         = ['sakimorix@gmail.com']
 
-  spec.summary       = 'Expose all tables and relations in a database as AR models ready for use.'
-  spec.homepage      = 'https://www.github.com/nestor-custodio/automodel'
+  spec.summary       = 'A fork of "automodel" with the proper dependencies for use with SQL Server.'
+  spec.homepage      = 'https://www.github.com/nestor-custodio/automodel-sqlserver'
   spec.license       = 'MIT'
 
   spec.files         = `git ls-files -z`.split("\x0").reject do |f|
@@ -33,5 +33,7 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'pg', '~> 0.21'
   spec.add_development_dependency 'sqlite3', '~> 1.3.13'
 
-  spec.add_dependency 'activerecord', '~> 5.0'
+  spec.add_dependency 'activerecord', '~> 4.2'
+  spec.add_dependency 'activerecord-sqlserver-adapter', '~> 4.2.0'
+  spec.add_dependency 'tiny_tds', '~> 2.1.2'
 end
