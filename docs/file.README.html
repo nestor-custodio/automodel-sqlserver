@@ -58,7 +58,7 @@
       </div>
 
       <div id="content"><div id='filecontents'>
-<h1 id="label-Automodel+rdoc-image-3Ahttps-3A-2F-2Fbadge.fury.io-2Frb-2Fautomodel.svg">Automodel <a href="https://badge.fury.io/rb/automodel"><img src="https://badge.fury.io/rb/automodel.svg"></a></h1>
+<h1 id="label-automodel-sqlserver+rdoc-image-3Ahttps-3A-2F-2Fbadge.fury.io-2Frb-2Fautomodel-sqlserver.svg">automodel-sqlserver <a href="https://badge.fury.io/rb/automodel-sqlserver"><img src="https://badge.fury.io/rb/automodel-sqlserver.svg"></a></h1>
 
 <p>Connecting your Rails application to a database created outside of the
 Rails environment usually means either spending hours writing up class
@@ -68,9 +68,9 @@ resigning yourself to building SQL strings and making
 
 <p>Are those SQL strings you&#39;re building even injection-safe? Hmm… 😟</p>
 
-<p><em>With a single command</em>, <strong>Automodel</strong> lets you connect
-to any database and access all of its tables via the ActiveRecord DSL
-you&#39;ve grown to love!</p>
+<p><em>With a single command</em>, <strong>automodel-sqlserver</strong> lets
+you connect to any database and access all of its tables via the
+ActiveRecord DSL you&#39;ve grown to love!</p>
 
 <p>It does this by analyzing the table structures and: - automatically
 defining all of the corresponding model classes - declaring column aliases
@@ -81,18 +81,26 @@ on foreign key definitions</p>
 
 <p>Add this line to your application&#39;s Gemfile:</p>
 
-<pre class="code ruby"><code class="ruby"><span class='id identifier rubyid_gem'>gem</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>automodel</span><span class='tstring_end'>&#39;</span></span>
+<pre class="code ruby"><code class="ruby"><span class='id identifier rubyid_gem'>gem</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>automodel-sqlserver</span><span class='tstring_end'>&#39;</span></span>
 </code></pre>
 
 <p>And then execute:</p>
 
-<pre class="code ruby"><code class="ruby">$ bundle
-</code></pre>
+<pre class="code ruby"><code class="ruby">$ bundle</code></pre>
 
 <p>Or install it yourself as:</p>
 
-<pre class="code ruby"><code class="ruby">$ gem install automodel
-</code></pre>
+<pre class="code ruby"><code class="ruby">$ gem install automodel-sqlserver</code></pre>
+
+<h4 id="label-Additional+Dependencies">Additional Dependencies</h4>
+
+<p>If you are running on Windows and <strong>not</strong> using RubyInstaller,
+the above steps are all that is needed.</p>
+
+<p>On all other platforms, this gem (and its dependencies) alone are not
+sufficient to connect to a SQL Server instance: <strong>you will also need
+to <a href="https://github.com/rails-sqlserver/tiny_tds#install">install
+FreeTDS on your system</a> if you haven&#39;t already</strong>.</p>
 
 <h2 id="label-Using+Automodel">Using Automodel</h2>
 
@@ -155,8 +163,7 @@ external_db:
   port:     port_number
   username: username
   password: password
-  database: sample_db
-</code></pre>
+  database: sample_db</code></pre>
 
 <pre class="code ruby"><code class="ruby"><span class='comment'>## In &quot;config/puma.rb&quot; or &quot;config/unicorn.rb&quot; ...
 </span>
@@ -207,27 +214,41 @@ under a module.</p>
 </span></code></pre>
 <hr>
 
-<p><a href="http://nestor-custodio.github.io/automodel/Automodel.html">Consult
-the repo docs for the full Automodel documentation.</a></p>
+<p><a
+href="http://nestor-custodio.github.io/automodel-sqlserver/top-level-namespace.html#automodel-instance_method">Consult
+the repo docs for the full automodel-sqlserver documentation.</a></p>
 
 <h2 id="label-FAQs">FAQs</h2>
 <ul><li>
-<h5 id="label-Do+I+have+to+add+anything+to+my+Gemfile+besides+-27automodel-27-3F">Do I have to add anything to my Gemfile besides <code>&#39;automodel&#39;</code>?</h5>
+<h5 id="label-Do+I+have+to+add+anything+to+my+Gemfile+besides+-27automodel-sqlserver-27-3F">Do I have to add anything to my Gemfile besides <code>&#39;automodel-sqlserver&#39;</code>?</h5>
 
-<p>Only if you want to use connection adapters that are not yet part of your
-gemset. (e.g. Don&#39;t expect to be able to connect to a MySQL database
-without having added <code>&#39;mysql2&#39;</code> to your Gemfile.</p>
-</li><li>
+<p>Due to the nature of this version of the gem, it is assumed you will want
+to connect to a SQL Server database, so both <strong><a
+href="https://github.com/rails-sqlserver/activerecord-sqlserver-adapter">activerecord-sqlserver-adapter</a></strong>
+and the <strong><a
+href="https://github.com/rails-sqlserver/tiny_tds">tiny_tds</a></strong>
+gems are included as dependencies (meaning you don&#39;t have to worry
+about them). Note that these gems alone are not sufficient to connect to a
+SQL Server instance, however: <strong>you still need to <a
+href="https://github.com/rails-sqlserver/tiny_tds#install">install FreeTDS
+on your system</a> if you haven&#39;t already</strong>.</p>
+</li></ul>
+
+<p>SQL Server aside, you will need to add the corresponding gems if you want
+to use connection adapters that are not yet part of your gemset. (e.g.
+Don&#39;t expect to be able to connect to a MySQL database without having
+added <code>&#39;mysql2&#39;</code> to your Gemfile.)</p>
+<ul><li>
 <h5 id="label-But+what+about+my+application-27s+own+models-3F">But what about my application&#39;s own models?</h5>
 
-<p>You can use Automodel <strong>and</strong> continue to use your
-application&#39;s own models without changing a single line of code.</p>
+<p>You can call <code>automodel</code> <strong>and</strong> continue to use
+your application&#39;s own models without changing a single line of code.</p>
 </li><li>
 <h5 id="label-Can+I+Automodel+more+than+one+database-3F">Can I Automodel more than one database?</h5>
 
 <p>Yes! You can Automodel as many databases with as many different adapters
-as you like. Automodel takes care of connecting to the various databases
-and managing their connection pools for you.</p>
+as you like. <strong>automodel-sqlserver</strong> takes care of connecting
+to the various databases and managing their connection pools for you.</p>
 </li><li>
 <h5 id="label-What+about+model+name+collisions-3F">What about model name collisions?</h5>
 
@@ -245,11 +266,11 @@ models generated <em>by that call</em>.</p>
 </li><li>
 <h5 id="label-What+if+I-27m+using+ActiveRecord+but+not+Rails-3F">What if I&#39;m using ActiveRecord but not Rails?</h5>
 
-<p>That&#39;s no problem at all! The <strong>automodel</strong> gem&#39;s
-<em>only</em> dependency is ActiveRecord – not Rails. Adding
-<code>&#39;automodel&#39;</code> to your Gemfile (along with any relevant
-connection adapters, of course) is all you need to make use of the tool in
-your vanilla-Ruby project. Just be mindful that – since
+<p>That&#39;s no problem at all! The <strong>automodel-sqlserver</strong> gem
+depends on ActiveRecord – not Rails. Adding
+<code>&#39;automodel-sqlserver&#39;</code> to your Gemfile (along with any
+relevant connection adapters, of course) is all you need to make use of the
+tool in your vanilla-Ruby project. Just be mindful that – since
 “config/database.yml” isn&#39;t available (as you&#39;re not using Rails) –
 you&#39;ll always need to pass in a full connection spec to your
 <code>automodel</code> calls (as in the very first example, under
@@ -282,7 +303,7 @@ target model.</p>
 <h2 id="label-Contribution+-2F+Development">Contribution / Development</h2>
 
 <p>Bug reports and pull requests are welcome on GitHub at <a
-href="https://github.com/nestor-custodio/automodel">github.com/nestor-custodio/automodel</a>.</p>
+href="https://github.com/nestor-custodio/automodel-sqlserver">github.com/nestor-custodio/automodel-sqlserver</a>.</p>
 
 <p>After checking out the repo, run <code>bin/setup</code> to install
 dependencies. Then, run <code>rake spec</code> to run the tests. You can
@@ -302,9 +323,9 @@ href="https://opensource.org/licenses/MIT">MIT License</a>.</p>
 </div></div>
 
       <div id="footer">
-  Generated on Fri Jun 15 16:46:49 2018 by
+  Generated on Wed Jun 20 18:16:10 2018 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
-  0.9.14 (ruby-2.5.1).
+  0.9.14 (ruby-2.4.4).
 </div>
 
     </div>
